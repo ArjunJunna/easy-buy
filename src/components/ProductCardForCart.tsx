@@ -1,11 +1,9 @@
-import { useState } from 'react';
 import {
   AddToWishlist,
   RemoveFromWishlist,
 } from '../features/products/productsSlice';
 import {
   RemoveFromCart,
-  AddToCart,
   UpdateQuantity,
 } from '../features/cartlist/cartSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
@@ -29,7 +27,7 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
   const productTitle = titleShortner(title,5);
 
   const dispatch = useAppDispatch();
-  const [itemCount, setItemCount] = useState(1);
+  //const [itemCount, setItemCount] = useState(1);
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
   const cartItems = useAppSelector(state => state.cart.cartData);
   const likedProduct = wishlistItems.some(item => item.id === id);
@@ -115,7 +113,7 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
                 <button
                   className="px-1 bg-slate-400 text-white rounded-full"
                   onClick={() => {
-                    setItemCount(count => count + 1);
+                    //setItemCount(count => count + 1);
                     increaseQuantity(id);
                   }}
                 >
@@ -129,7 +127,7 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
                       removeFromCartlistHandler(id);
                       dispatch(RemoveFromCart(id));
                     } else {
-                      setItemCount(count => count - 1);
+                      //setItemCount(count => count - 1);
                       decreaseQuantity(id);
                     }
                   }}
