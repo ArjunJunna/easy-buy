@@ -1,3 +1,4 @@
+import './App.css'
 import { useEffect } from 'react';
 import { useAppDispatch } from './hooks';
 import { Toaster } from 'react-hot-toast';
@@ -20,7 +21,7 @@ function App() {
   }, []);
   return (
     <>
-      <div className="bg-slate-50 min-h-screen">
+      <div className="bg-slate-50 min-h-screen relative">
         <Toaster position="bottom-right" reverseOrder={true} />
         <Navbar />
         <Routes>

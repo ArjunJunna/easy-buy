@@ -23,15 +23,17 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
     price,
     rating: { rate },
   } = itemInfo;
+  const qty = 1;
+  const productDetails = { ...itemInfo, qty };
   const dispatch = useAppDispatch();
-  const productTitle = titleShortner(title);
-  const navigate=useNavigate();
-  
+  const productTitle = titleShortner(title, 5);
+  const navigate = useNavigate();
+
   const cartItems = useAppSelector(state => state.cart.cartData);
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
 
   const clickHandler = () => {
-    dispatch(AddToCart(itemInfo));
+    dispatch(AddToCart(productDetails));
   };
 
   const goToCartHandler = () => {
@@ -41,12 +43,10 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
 
   const addToWishlistHandler = () => {
     dispatch(AddToWishlist(itemInfo));
-
   };
 
   const removeFromWishlistHandler = (id: number) => {
     dispatch(RemoveFromWishlist(id));
-    
   };
 
   const value = cartItems.some((item: ProductData) => item.id === id);
@@ -81,7 +81,6 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
         </span>
         {likedProduct ? (
           <>
-           
             <span
               className="flex items-center justify-center absolute top-2 right-2 bg-gray-300 opacity-80 h-6 w-6 rounded-full cursor-pointer"
               onClick={() => removeFromWishlistHandler(id)}
@@ -91,7 +90,6 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           </>
         ) : (
           <>
-           
             <span
               className="flex items-center justify-center absolute top-2 right-2 bg-gray-300 opacity-80 h-6 w-6 rounded-full cursor-pointer"
               onClick={() => addToWishlistHandler()}

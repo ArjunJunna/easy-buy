@@ -48,6 +48,7 @@ type InitialState = {
   productsData: ProductData[];
   wishlistData: ProductData[] | [];
   singleProductData: ProductData | null;
+  searchValue: string;
 };
 
 const initialState: InitialState = {
@@ -56,6 +57,7 @@ const initialState: InitialState = {
   productsData: [],
   singleProductData: null,
   wishlistData: [],
+  searchValue: '',
 };
 
 const productSlice = createSlice({
@@ -80,6 +82,9 @@ const productSlice = createSlice({
       state.wishlistData = state.wishlistData.filter(
         item => item.id !== action.payload
       );
+    },
+    SearchProduct: (state, action: PayloadAction<string>) => {
+      state.searchValue = action.payload;
     },
   },
   extraReducers: builder => {
@@ -122,4 +127,5 @@ const productSlice = createSlice({
 
 export const productReducer = productSlice.reducer;
 
-export const { AddToWishlist, RemoveFromWishlist } = productSlice.actions;
+export const { AddToWishlist, RemoveFromWishlist, SearchProduct } =
+  productSlice.actions;

@@ -1,0 +1,19 @@
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #011222d2;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background-color: #011222d2;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 153, 152, 0.795);
+}

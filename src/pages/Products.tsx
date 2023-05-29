@@ -8,13 +8,16 @@ import {
   sortByPrice,
   filterByRating,
   filterDataByPricing,
+  filterBySearch,
 } from '../utils/utilities';
+import ScrollToTop from '../components/ScrollToTop';
 //import { SortPrice } from '../features/filters/filterSlice';
 
 const Products = () => {
   const [hiddenFilters, showHiddenFilters] = useState(false);
   const data = useAppSelector(state => state.products.productsData);
   const loading = useAppSelector(state => state.products.loading);
+  const userSearchValue = useAppSelector(state => state.products.searchValue);
   /*console.log('Your loading: ', loading);
   console.log('Your data: ', data);*/
   const selectedCategory = useAppSelector(state => state.filters.category);
@@ -33,10 +36,14 @@ const Products = () => {
   //console.log('Your data after sorting by price', filteredDataByHL);
   const filteredDataByRating = filterByRating(filteredDataByHL, selectedRating);
   //console.log('Your data from filtered rating', filteredDataByRating);
-
-  const filteredFinalData = filterDataByPricing(
+  const filteredDataByPrice = filterDataByPricing(
     filteredDataByRating,
     selectedPricingCategory
+  );
+
+  const filteredFinalData = filterBySearch(
+    filteredDataByPrice,
+    userSearchValue
   );
   /*
   const finalData = sortByPrice(filteredDataByRating, selectedSortPrice);
@@ -45,7 +52,7 @@ const Products = () => {
 
   return (
     <>
-      <div className="flex justify-between p-4">
+      <div className="flex justify-between p-4 relative">
         <span className="font-body font-semibold">Let's do Easy Buy.</span>
         <button>
           <i
@@ -84,6 +91,7 @@ const Products = () => {
             )}
           </div>
         </div>
+        <ScrollToTop/>
       </div>
     </>
   );

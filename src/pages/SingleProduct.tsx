@@ -1,7 +1,5 @@
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { useState } from 'react';
 import {
- 
   AddToWishlist,
   ProductData,
   RemoveFromWishlist,
@@ -12,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 const SingleProduct = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [itemCount, setItemCount] = useState(1);
   const singleProductData = useAppSelector(
     state => state?.products?.singleProductData
   );
@@ -30,12 +27,13 @@ const SingleProduct = () => {
     image,
     rating: { rate, count },
   } = singleProductData;
+  const qty=1;
+  const itemDetails={...singleProductData,qty}
 
   const isInCartlist = cartItems.some((item: ProductData) => item.id === id);
-
+ 
   const clickHandler = () => {
-    dispatch(AddToCart(singleProductData));
-   
+    dispatch(AddToCart(itemDetails));
   };
 
   const likedProduct = wishlistItems.some(
@@ -44,12 +42,10 @@ const SingleProduct = () => {
 
   const addToWishlistHandler = () => {
     dispatch(AddToWishlist(singleProductData));
-   
   };
 
   const removeFromWishlistHandler = (id: number) => {
     dispatch(RemoveFromWishlist(id));
-   
   };
 
   return (
@@ -131,6 +127,7 @@ const SingleProduct = () => {
               <span className="text-sm text-gray-400">Description</span>
               <h1 className="font-normal">{description}</h1>
             </div>
+            {/* 
             <div className="flex gap-x-4">
               <input
                 type="number"
@@ -149,6 +146,7 @@ const SingleProduct = () => {
                   : `ADD ${itemCount} ITEMS TO CART`}
               </button>
             </div>
+            */}
           </div>
         </div>
       </div>

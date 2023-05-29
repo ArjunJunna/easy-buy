@@ -1,9 +1,9 @@
 import { ProductData } from '../features/products/productsSlice';
 import { Category, SortPrice } from '../features/filters/filterSlice';
 
-export const titleShortner = (title: string) => {
+export const titleShortner = (title: string,num:number) => {
   const originalTitle = title.split(' ');
-  const requiredTitle = originalTitle?.slice(0, 5).join(' ');
+  const requiredTitle = originalTitle?.slice(0, num).join(' ');
   return requiredTitle;
 };
 
@@ -59,3 +59,14 @@ export const filterDataByPricing = (data: ProductData[], pricing: string) => {
       return data;
   }
 };
+
+export const filterBySearch = (data:ProductData[], searchFor:string) => {
+  if (searchFor === '') {
+    return data;
+  } else {
+    return data.filter(item =>
+      item.title.toLowerCase().includes(searchFor.toLowerCase())
+    );
+  }
+};
+

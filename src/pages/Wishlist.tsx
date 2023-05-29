@@ -1,4 +1,5 @@
 import ProductCard from '../components/ProductCard';
+import ScrollToTop from '../components/ScrollToTop';
 import { useAppSelector } from '../hooks';
 
 const Wishlist = () => {
@@ -16,7 +17,7 @@ const Wishlist = () => {
         ) : null}
       </div>
 
-      <div className=" min-h-screen flex flex-wrap gap-6 p-8 justify-center">
+      <div className=" min-h-screen flex flex-wrap gap-6 p-8 justify-center relative">
         {wishlistData.length ? (
           wishlistData.map(item => (
             <ProductCard key={item.id} itemInfo={item} />
@@ -26,6 +27,7 @@ const Wishlist = () => {
             The product you are looking for is currently unavailable...
           </h1>
         )}
+        <ScrollToTop/>
       </div>
     </>
   );

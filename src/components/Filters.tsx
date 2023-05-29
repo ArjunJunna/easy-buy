@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { SetCategory } from '../features/filters/filterSlice';
 import { Category } from '../features/filters/filterSlice';
@@ -9,7 +9,9 @@ import {
   ClearFilters,
 } from '../features/filters/filterSlice';
 
+
 const Filters = () => {
+
   const [category, showCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<
     Category | 'Show All Products'
@@ -21,13 +23,18 @@ const Filters = () => {
   useEffect(() => {
     dispatch(SetCategory(categoryValue));
   }, [categoryValue]);
-
+ 
   const clearFilters = () => {
     dispatch(ClearFilters());
     setCategoryValue('Show All Products');
   };
+  const setCategory = (value: Category) => {
+    setCategoryValue(value);
+    showCategory(prev => !prev);
+  };
+
   return (
-    <>
+    <div className="w-full flex flex-col gap-y-2 sticky top-20 pl-4 ">
       <div className="flex justify-between items-center font-medium text-sm w-full">
         <span>Filters</span>
         <button
@@ -59,31 +66,31 @@ const Filters = () => {
           <div className="flex flex-col w-[80%] cursor-pointer border-gray-300 rounded-md border-2 py-1 items-start font-medium text-sm">
             <span
               className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategoryValue('Show All Products')}
+              onClick={() => setCategory('Show All Products')}
             >
               Show All products
             </span>
             <span
               className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategoryValue('electronics')}
+              onClick={() => setCategory('electronics')}
             >
               electronics
             </span>
             <span
               className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategoryValue('jewelery')}
+              onClick={() => setCategory('jewelery')}
             >
               jewellery
             </span>
             <span
               className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategoryValue("men's clothing")}
+              onClick={() => setCategory(`men's clothing`)}
             >
               men's clothing
             </span>
             <span
               className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategoryValue("women's clothing")}
+              onClick={() => setCategory(`women's clothing`)}
             >
               women's clothing
             </span>
@@ -194,7 +201,7 @@ const Filters = () => {
           <label className="font-body text-sm">Above 800 $</label>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
