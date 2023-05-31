@@ -7,7 +7,7 @@ import { ClearCartlist } from '../features/cartlist/cartSlice';
 const ProfileSection = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const id = useAppSelector(state => state?.profile?.userData?.id);
+
   const data = useAppSelector(state => state.profile.userData);
   const isLoading = useAppSelector(state => state.profile.isLoading);
 
