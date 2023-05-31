@@ -2,7 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import ErrorPage from '../pages/404Error';
 import Cart from '../pages/Cart';
 import Home from '../pages/Home';
-import LoginPage from '../pages/LoginPage';
 import Newlaunches from '../pages/Newlaunches';
 import Products from '../pages/Products';
 import Profile from '../pages/Profile';
