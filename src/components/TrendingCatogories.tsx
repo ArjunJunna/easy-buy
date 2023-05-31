@@ -9,7 +9,7 @@ const TrendingCatogories = () => {
         onClick={() => navigate('/products')}
       >
         <img
-          src="../../public/assets/electronics.png"
+          src={'../../public/assets/electronics.png'}
           alt="Electronics"
           className="h-full w-full rounded-2xl"
         />

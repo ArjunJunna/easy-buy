@@ -10,7 +10,7 @@ const Home = () => {
       <div className="min-h-screen flex flex-col gap-y-6 p-1 relative">
         <div className="relative m-1 rounded-lg">
           <img
-            src="../../public/assets/easy-buy-illustration.svg"
+            src={"../../public/assets/easy-buy-illustration.svg"}
             alt="image"
             className="w-full h-96 bg-cover bg-slate-600 p-6 rounded-3xl"
           />
