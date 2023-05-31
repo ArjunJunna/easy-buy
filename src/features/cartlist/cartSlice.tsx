@@ -12,7 +12,7 @@ export type ProductData = {
     rate: number;
     count: number;
   };
-  qty:number;
+  qty: number;
 };
 
 type InitialState = {
@@ -46,6 +46,9 @@ const productSlice = createSlice({
         item => item.id !== action.payload
       );
     },
+    ClearCartlist: state => {
+      state.cartData = [];
+    },
     UpdateQuantity: (state, action: PayloadAction<ProductData[]>) => {
       if (action.payload) {
         toast.success('Your item has been updated', {
@@ -54,10 +57,10 @@ const productSlice = createSlice({
       }
       state.cartData = action.payload;
     },
-   
   },
 });
 
 export const cartReducer = productSlice.reducer;
 
-export const { AddToCart, RemoveFromCart, UpdateQuantity } = productSlice.actions;
+export const { AddToCart, RemoveFromCart, UpdateQuantity, ClearCartlist } =
+  productSlice.actions;

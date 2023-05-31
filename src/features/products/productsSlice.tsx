@@ -83,6 +83,9 @@ const productSlice = createSlice({
         item => item.id !== action.payload
       );
     },
+    ClearWishlist: state => {
+      state.wishlistData = [];
+    },
     SearchProduct: (state, action: PayloadAction<string>) => {
       state.searchValue = action.payload;
     },
@@ -127,5 +130,9 @@ const productSlice = createSlice({
 
 export const productReducer = productSlice.reducer;
 
-export const { AddToWishlist, RemoveFromWishlist, SearchProduct } =
-  productSlice.actions;
+export const {
+  AddToWishlist,
+  RemoveFromWishlist,
+  ClearWishlist,
+  SearchProduct,
+} = productSlice.actions;

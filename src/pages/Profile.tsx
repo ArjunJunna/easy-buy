@@ -1,5 +1,11 @@
-const Profile = () => {
-  return <div>This is your profile page...</div>;
-}
+import ProfileSection from '../components/ProfileSection';
 
-export default Profile
+const Profile = () => {
+  return (
+    <div className="flex justify-center h-full">
+      <ProfileSection />
+    </div>
+  );
+};
+
+export default Profile;

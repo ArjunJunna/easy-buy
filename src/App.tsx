@@ -1,40 +1,26 @@
-import './App.css'
+import './App.css';
 import { useEffect } from 'react';
-import { useAppDispatch } from './hooks';
+import { useAppDispatch, useAppSelector } from './hooks';
 import { Toaster } from 'react-hot-toast';
 import { fetchAllProducts } from './features/products/productsSlice';
-import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Cart from './pages/Cart';
-import Profile from './pages/Profile';
-import Wishlist from './pages/Wishlist';
-import Products from './pages/Products';
-import Newlaunches from './pages/Newlaunches';
-import ErrorPage from './pages/404Error';
-import SingleProduct from './pages/SingleProduct';
+import AppRoute from './routes/AppRoute';
+import { fetchUser } from './features/profile/profileSlice';
 
 function App() {
   const dispatch = useAppDispatch();
+  const id=useAppSelector(state=>state?.profile?.userData?.id);
+
   useEffect(() => {
     dispatch(fetchAllProducts());
-  }, []);
+    dispatch(fetchUser(id as number));
+  }, [id]);
   return (
     <>
       <div className="bg-slate-50 min-h-screen relative">
         <Toaster position="bottom-right" reverseOrder={true} />
         <Navbar />
-        <Routes>
-          <Route index element={<Home />} />
-          <Route path="home" element={<Home />} />
-          <Route path="cartlist" element={<Cart />} />
-          <Route path="wishlist" element={<Wishlist />} />
-          <Route path="products" element={<Products />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="newlaunches" element={<Newlaunches />} />
-          <Route path="products/:productId" element={<SingleProduct />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
+        <AppRoute />
       </div>
     </>
   );
