@@ -9,7 +9,7 @@ const TrendingCatogories = () => {
         onClick={() => navigate('/products')}
       >
         <img
-          src={'../../public/assets/electronics.png'}
+          src='/assets/electronics.png'
           alt="Electronics"
           className="h-full w-full rounded-2xl"
         />
@@ -22,7 +22,7 @@ const TrendingCatogories = () => {
         onClick={() => navigate('/products')}
       >
         <img
-          src="../../public/assets/jewelery.jpeg"
+          src="/assets/jewelery.jpeg"
           alt="Jewelery"
           className="h-full w-full rounded-2xl"
         />
@@ -35,7 +35,7 @@ const TrendingCatogories = () => {
         onClick={() => navigate('/products')}
       >
         <img
-          src="../../public/assets/men's-clothing.jpg"
+          src="/assets/men's-clothing.jpg"
           alt="Men's Clothing"
           className="h-full w-full rounded-2xl"
         />
@@ -48,7 +48,7 @@ const TrendingCatogories = () => {
         onClick={() => navigate('/products')}
       >
         <img
-          src="../../public/assets/women's-clothing.jpeg"
+          src="/assets/women's-clothing.jpeg"
           alt="Women's Clothing"
           className="h-full w-full rounded-2xl"
         />
