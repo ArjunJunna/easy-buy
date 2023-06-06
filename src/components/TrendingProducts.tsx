@@ -5,7 +5,6 @@ import { useState } from 'react';
 const TrendingProducts = () => {
   const [page, setPage] = useState(1);
   const productData = useAppSelector(state => state.products.productsData);
-  console.log('From home page: ', productData.length);
   const selectPageHandler = (selectedPage: number) => {
     if (
       selectedPage >= 1 &&

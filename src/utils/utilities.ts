@@ -19,10 +19,10 @@ export const filteredByCategory = (
 
 export const sortByPrice = (data: ProductData[], sortFrom: SortPrice) => {
   if (sortFrom === 'HIGH_TO_LOW') {
-    console.log('You choose', sortFrom);
+   
     return [...data].sort((a, b) => b.price - a.price);
   } else if (sortFrom === 'LOW_TO_HIGH') {
-    console.log('You choose', sortFrom);
+    
     return [...data].sort((a, b) => a.price - b.price);
   }
   return data;

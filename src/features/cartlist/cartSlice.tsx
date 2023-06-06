@@ -1,22 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
-
-export type ProductData = {
-  id: number;
-  category: string;
-  title: string;
-  price: number;
-  description: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-  qty: number;
-};
+import { ProductDataForCart } from '../../../Types';
 
 type InitialState = {
-  cartData: ProductData[];
+  cartData: ProductDataForCart[];
 };
 
 const initialState: InitialState = {
@@ -27,14 +14,13 @@ const productSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    AddToCart: (state, action: PayloadAction<ProductData>) => {
+    AddToCart: (state, action: PayloadAction<ProductDataForCart>) => {
       if (action.payload) {
         toast.success('Your product has been added to cartlist.', {
           style: { background: '#22c55e', color: '#FFFFFF' },
         });
       }
       state.cartData = [...state.cartData, action.payload];
-      console.log('add to cart dispatched: ', state.cartData);
     },
     RemoveFromCart: (state, action: PayloadAction<number>) => {
       if (action.payload) {
@@ -49,7 +35,7 @@ const productSlice = createSlice({
     ClearCartlist: state => {
       state.cartData = [];
     },
-    UpdateQuantity: (state, action: PayloadAction<ProductData[]>) => {
+    UpdateQuantity: (state, action: PayloadAction<ProductDataForCart[]>) => {
       if (action.payload) {
         toast.success('Your item has been updated', {
           style: { background: '#22c55e', color: '#FFFFFF' },

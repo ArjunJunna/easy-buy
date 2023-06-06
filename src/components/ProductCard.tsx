@@ -1,4 +1,4 @@
-import { ProductData } from '../features/products/productsSlice';
+import { ProductData } from '../../Types';
 import { titleShortner } from '../utils/utilities';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks';
@@ -62,6 +62,7 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           alt={productTitle}
           className="h-[70%] w-full rounded-t-md cursor-pointer"
           onClick={() => goToCartHandler()}
+          loading="lazy"
         />
         <div className="flex flex-col gap-y-1 p-2">
           <h2 className="text-white font-body font-semibold text-xs cursor-pointer absolute bottom-20 bg-slate-600 px-1.5 rounded opacity-70">

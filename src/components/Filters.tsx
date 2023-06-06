@@ -1,8 +1,8 @@
 import { useState, useEffect} from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { SetCategory } from '../features/filters/filterSlice';
-import { Category } from '../features/filters/filterSlice';
+import { Category } from '../../Types';
 import {
+  SetCategory,
   SortPrice,
   SortByRating,
   SortByPricing,

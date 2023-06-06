@@ -1,4 +1,4 @@
-import { ProductData } from '../features/products/productsSlice';
+import { ProductData } from '../../Types';
 import { titleShortner } from '../utils/utilities';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks';

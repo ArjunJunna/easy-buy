@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
 import { fetchUserDetails } from '../../services/userService';
-
+import {UserData} from '../../../Types'
+/*
 type UserData = {
   id: number;
   firstName: string;
@@ -62,7 +63,7 @@ type UserData = {
   ssn: string;
   userAgent: string;
 };
-
+*/
 type InitialState = {
   userData: UserData | null;
   isLoading: boolean;
@@ -138,8 +139,8 @@ export const fetchUser = createAsyncThunk(
   async (id: number, { rejectWithValue }) => {
     try {
       const response = await fetchUserDetails(id);
-      console.log('response',response);
-      return response?.data;
+      const data:UserData = response?.data;
+      return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
     }

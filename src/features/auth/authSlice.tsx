@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import { loginAuthHandler } from '../../services/authService';
+import { LoginHandlerArg } from '../../../Types';
 
 export const loginHandler = createAsyncThunk(
   'auth/loginHandler',
-  async (arg: any, { rejectWithValue }) => {
+  async (arg: LoginHandlerArg, { rejectWithValue }) => {
     const { login, setLogin } = arg;
-    console.log('from the fn.', login);
+   
     try {
       const response = await loginAuthHandler(login.input);
       if (response) {
@@ -59,7 +60,7 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.token = action.payload.token;
         state.user = action.payload.username;
-        console.log('look here', action.payload);
+       
       }),
       builder.addCase(loginHandler.rejected, state => {
         state.isLoading = false;

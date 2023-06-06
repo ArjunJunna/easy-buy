@@ -11,31 +11,29 @@ import {
   filterBySearch,
 } from '../utils/utilities';
 import ScrollToTop from '../components/ScrollToTop';
-//import { SortPrice } from '../features/filters/filterSlice';
 
 const Products = () => {
   const [hiddenFilters, showHiddenFilters] = useState(false);
   const data = useAppSelector(state => state.products.productsData);
   const loading = useAppSelector(state => state.products.loading);
   const userSearchValue = useAppSelector(state => state.products.searchValue);
-  /*console.log('Your loading: ', loading);
-  console.log('Your data: ', data);*/
+
   const selectedCategory = useAppSelector(state => state.filters.category);
   const selectedSortPrice = useAppSelector(state => state.filters.sortPrice);
   const selectedRating = useAppSelector(state => state.filters.rating);
   const selectedPricingCategory = useAppSelector(
     state => state.filters.pricing
   );
-  //console.log('You have seletected: ', selectedCategory);
+
   const filteredDataByCategory = filteredByCategory(data, selectedCategory);
-  //console.log('Your data from filtered category', filteredDataByCategory);
+
   const filteredDataByHL = sortByPrice(
     filteredDataByCategory,
     selectedSortPrice
   );
-  //console.log('Your data after sorting by price', filteredDataByHL);
+
   const filteredDataByRating = filterByRating(filteredDataByHL, selectedRating);
-  //console.log('Your data from filtered rating', filteredDataByRating);
+
   const filteredDataByPrice = filterDataByPricing(
     filteredDataByRating,
     selectedPricingCategory
@@ -45,10 +43,6 @@ const Products = () => {
     filteredDataByPrice,
     userSearchValue
   );
-  /*
-  const finalData = sortByPrice(filteredDataByRating, selectedSortPrice);
-  const filterFinalData=filterDataByPricing(finalData,selectedPricingCategory)*/
-  console.log('filteredData', filteredFinalData);
 
   return (
     <>
@@ -68,7 +62,7 @@ const Products = () => {
         <div className="min-h-screen w-full z-0 relative p-4">
           {hiddenFilters && (
             <>
-              <div className="absolute z-10 right-2 w-1/2">
+              <div className="absolute z-10 right-2 w-2/3 min-[600px]:w-1/3">
                 <div className="bg-slate-100 gap-y-3 flex flex-col px-4 py-2 w-full md:hidden max-w-xs h-fit items-center rounded-md shadow-md">
                   <Filters />
                 </div>
@@ -91,7 +85,7 @@ const Products = () => {
             )}
           </div>
         </div>
-        <ScrollToTop/>
+        <ScrollToTop />
       </div>
     </>
   );

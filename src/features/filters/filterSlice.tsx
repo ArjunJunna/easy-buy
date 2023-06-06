@@ -1,22 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Category,SortPriceType } from '../../../Types';
 
-export type Category =
-  | 'Show All Products'
-  | 'electronics'
-  | 'jewelery'
-  | `men's clothing`
-  | `women's clothing`;
-
-export type SortPrice = 'LOW_TO_HIGH' | 'HIGH_TO_LOW' | '';
-
-type categoryState = {
+type CategoryState = {
   category: Category;
-  sortPrice: SortPrice;
+  sortPrice: SortPriceType;
   rating: number;
   pricing: string;
 };
 
-const initialState: categoryState = {
+const initialState: CategoryState = {
   category: 'Show All Products',
   sortPrice: '',
   rating: 5,
@@ -29,19 +21,19 @@ const filterSlice = createSlice({
   reducers: {
     SetCategory: (state, action: PayloadAction<Category>) => {
       state.category = action.payload;
-      console.log(action.payload, 'was clicked');
+     
     },
-    SortPrice: (state, action: PayloadAction<SortPrice>) => {
+    SortPrice: (state, action: PayloadAction<SortPriceType>) => {
       state.sortPrice = action.payload;
-      console.log(action.payload, 'was clicked');
+      
     },
     SortByRating: (state, action: PayloadAction<number>) => {
       state.rating = action.payload;
-      console.log(action.payload, 'was clicked');
+      
     },
     SortByPricing: (state, action: PayloadAction<string>) => {
       state.pricing = action.payload;
-      console.log(action.payload, 'was clicked');
+      
     },
     ClearFilters:(state)=>{
       state.category = initialState.category;

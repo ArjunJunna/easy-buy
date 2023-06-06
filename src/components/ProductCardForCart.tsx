@@ -2,16 +2,13 @@ import {
   AddToWishlist,
   RemoveFromWishlist,
 } from '../features/products/productsSlice';
-import {
-  RemoveFromCart,
-  UpdateQuantity,
-} from '../features/cartlist/cartSlice';
+import { RemoveFromCart, UpdateQuantity } from '../features/cartlist/cartSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { titleShortner } from '../utils/utilities';
-import { ProductData } from '../features/cartlist/cartSlice';
+import { ProductDataForCart } from '../../Types';
 
 type ProductDataProp = {
-  itemInfo: ProductData;
+  itemInfo: ProductDataForCart;
 };
 
 const ProductCard = ({ itemInfo }: ProductDataProp) => {
@@ -24,10 +21,9 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
     rating: { rate, count },
     qty,
   } = itemInfo;
-  const productTitle = titleShortner(title,5);
+  const productTitle = titleShortner(title, 3);
 
   const dispatch = useAppDispatch();
-  //const [itemCount, setItemCount] = useState(1);
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
   const cartItems = useAppSelector(state => state.cart.cartData);
   const likedProduct = wishlistItems.some(item => item.id === id);
@@ -65,10 +61,14 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
     dispatch(UpdateQuantity(updatedCartItems));
   };
 
+  /*
+w-[35rem] max-sm:w-[27rem] max-[400px]:w-[19.5rem] max-[450px]:w-[24rem]
+  */
+
   return (
     <>
-      <div className=" flex md:flex-row h-52 w-[35rem] max-sm:w-[27rem] bg-slate-200 rounded-md shadow-lg">
-        <div className="basis-36 md:basis-44 shrink-0 relative">
+      <div className=" flex md:flex-row h-52 bg-slate-200 rounded-md shadow-lg md:w-[35rem]">
+        <div className="max-[380px]:basis-24 sm:basis-36 md:basis-44 shrink-0 relative">
           <img src={image} alt={title} className="h-full w-full" />
           <span className="absolute top-0 m-2 bg-gray-500 text-xs text-white font-semibold rounded p-1 shadow-xl opacity-80 cursor-pointer">
             {rate.toFixed(1)}

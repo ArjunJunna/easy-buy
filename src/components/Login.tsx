@@ -12,14 +12,14 @@ const Login = () => {
     error: '',
   });
 
-  const loginInputHandler = (e: any) => {
+  const loginInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLogin({ ...login, input: { ...login.input, [name]: value } });
-    console.log(login);
+    
   };
 
   const submitForm = () => {
-    console.log('login', login);
+    
     if (login.input.username && login.input.password) {
       dispatch(loginHandler({ login, setLogin }));
       navigate('/', { replace: true });
