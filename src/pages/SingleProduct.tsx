@@ -1,9 +1,9 @@
 import { useAppSelector, useAppDispatch } from '../hooks';
 import {
   AddToWishlist,
-  ProductData,
   RemoveFromWishlist,
 } from '../features/products/productsSlice';
+import { ProductData } from '../../Types';
 import { AddToCart } from '../features/cartlist/cartSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,11 +27,11 @@ const SingleProduct = () => {
     image,
     rating: { rate, count },
   } = singleProductData;
-  const qty=1;
-  const itemDetails={...singleProductData,qty}
+  const qty = 1;
+  const itemDetails = { ...singleProductData, qty };
 
   const isInCartlist = cartItems.some((item: ProductData) => item.id === id);
- 
+
   const clickHandler = () => {
     dispatch(AddToCart(itemDetails));
   };

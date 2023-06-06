@@ -1,5 +1,4 @@
-import { ProductData } from '../features/products/productsSlice';
-import { Category, SortPrice } from '../features/filters/filterSlice';
+import { ProductData, Category, SortPriceType } from '../../Types';
 
 export const titleShortner = (title: string,num:number) => {
   const originalTitle = title.split(' ');
@@ -17,12 +16,10 @@ export const filteredByCategory = (
   return filteredData;
 };
 
-export const sortByPrice = (data: ProductData[], sortFrom: SortPrice) => {
+export const sortByPrice = (data: ProductData[], sortFrom: SortPriceType) => {
   if (sortFrom === 'HIGH_TO_LOW') {
-   
     return [...data].sort((a, b) => b.price - a.price);
   } else if (sortFrom === 'LOW_TO_HIGH') {
-    
     return [...data].sort((a, b) => a.price - b.price);
   }
   return data;
