@@ -61,7 +61,7 @@ const OrderDetails = () => {
       image:
         'https://res.cloudinary.com/djxonmiuo/image/upload/v1692966522/Easy-Buy-Logo_dyeqva.png',
       order_id: order?.id,
-      callback_url: `https://easy-buy-api.onrender.com/api/v1/payment/paymentverification/${order?.id}`,
+      callback_url: `https://easy-buy-ecommerce.onrender.com/api/v1/payment/paymentverification/${order?.id}`,
       prefill: {
         name: { name },
         email: { userMail },
