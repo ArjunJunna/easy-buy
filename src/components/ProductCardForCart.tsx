@@ -1,9 +1,14 @@
-
-import {  UpdateQuantity,deleteProductFromCart } from '../features/cartlist/cartSlice';
+import {
+  UpdateQuantity,
+  deleteProductFromCart,
+} from '../features/cartlist/cartSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { titleShortner } from '../utils/utilities';
 import { ProductDataForCart } from '../../Types';
-import { addProductToWishlist, deleteProductFromWishlist } from '../features/products/productsSlice';
+import {
+  addProductToWishlist,
+  deleteProductFromWishlist,
+} from '../features/products/productsSlice';
 
 type ProductDataProp = {
   itemInfo: ProductDataForCart;
@@ -33,13 +38,13 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
   };
 
   const removeFromWishlistHandler = () => {
-     const productId = _id;
-     dispatch(deleteProductFromWishlist({ userId, productId }));
+    const productId = _id;
+    dispatch(deleteProductFromWishlist({ userId, productId }));
   };
 
   const removeFromCartlistHandler = () => {
-    const productId=_id;
-    dispatch(deleteProductFromCart({userId,productId}));
+    const productId = _id;
+    dispatch(deleteProductFromCart({ userId, productId }));
   };
 
   const increaseQuantity = (_id: string) => {
@@ -66,7 +71,7 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
   return (
     <>
       <div className=" flex md:flex-row h-52 bg-slate-200 rounded-md shadow-lg md:w-[35rem]">
-        <div className="max-[380px]:basis-24 sm:basis-36 md:basis-44 shrink-0 relative">
+        <div className="max-[380px]:basis-24 max-[640px]:basis-36 sm:basis-36 md:basis-44 shrink-0 relative">
           <img src={image} alt={title} className="h-full w-full" />
           <span className="absolute top-0 m-2 bg-gray-500 text-xs text-white font-semibold rounded p-1 shadow-xl opacity-80 cursor-pointer">
             {rate.toFixed(1)}
@@ -98,7 +103,7 @@ const ProductCard = ({ itemInfo }: ProductDataProp) => {
         </div>
         <div className=" w-full p-2 md:p-4 flex flex-col">
           <div className="flex-grow p-1 flex flex-col gap-y-2">
-            <h1 className="font-body font-semibold text-lg">{productTitle}</h1>
+            <h1 className="font-body font-semibold text-base">{productTitle}</h1>
             <div className="flex items-center gap-y-2">
               <span className="text-xs text-gray-400">{count} ratings</span>
             </div>
