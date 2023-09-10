@@ -26,7 +26,7 @@ const Navbar = () => {
       <header className="flex flex-wrap items-center py-1 px-12 max-[420px]:px-6 sticky top-0 z-10 bg-white">
         <Link to="/home" className="flex-1">
           <img
-            src="public/assets/Easy-Buy-Logo.png"
+            src="/assets/Easy-Buy-Logo.png"
             alt="Easy-Buy-Logo"
             className="h-10 max-sm:h-5 max-sm:w-16 max-[460px]:hidden"
           />
