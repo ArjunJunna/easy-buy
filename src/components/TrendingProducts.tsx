@@ -1,10 +1,12 @@
 import TrendingCard from './TrendingCard';
 import { useAppSelector } from '../hooks';
 import { useState } from 'react';
+import Loader from './Loader';
 
 const TrendingProducts = () => {
   const [page, setPage] = useState(1);
   const productData = useAppSelector(state => state.products.productsData);
+  const isLoading=useAppSelector(state=>state.products.loading);
   const selectPageHandler = (selectedPage: number) => {
     if (
       selectedPage >= 1 &&
@@ -14,11 +16,16 @@ const TrendingProducts = () => {
       setPage(selectedPage);
     }
   };
-  return (
+
+  return isLoading ? (
+      
+      <Loader />
+   
+  ) : (
     <>
       <div className="flex flex-wrap w-full gap-x-2 gap-y-4 justify-around px-4">
         {productData.slice(page * 5 - 5, page * 5).map(item => (
-          <TrendingCard itemInfo={item} key={item.id} />
+          <TrendingCard itemInfo={item} key={item._id} />
         ))}
       </div>
       <div className="flex justify-center gap-x-6 mt-4 mb-8 font-body font-semibold">
@@ -30,7 +37,7 @@ const TrendingProducts = () => {
         >
           Prev
         </button>
-        {[...Array(productData.length / 5)].map((_, i) => {
+        {[...Array(4)].map((_, i) => {
           return (
             <button
               key={i}
@@ -47,7 +54,7 @@ const TrendingProducts = () => {
         })}
         <button
           className={
-            page < productData.length / 5
+            page < productData.length / 6
               ? 'hover:opacity-30 text-orange-900'
               : ' text-black hover:opacity-30'
           }
@@ -58,6 +65,7 @@ const TrendingProducts = () => {
       </div>
     </>
   );
+
 };
 
 export default TrendingProducts;

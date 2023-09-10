@@ -1,11 +1,14 @@
 import {
-  AddToWishlist,
-  RemoveFromWishlist,
-} from '../features/products/productsSlice';
-import { RemoveFromCart, UpdateQuantity } from '../features/cartlist/cartSlice';
+  UpdateQuantity,
+  deleteProductFromCart,
+} from '../features/cartlist/cartSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { titleShortner } from '../utils/utilities';
 import { ProductDataForCart } from '../../Types';
+import {
+  addProductToWishlist,
+  deleteProductFromWishlist,
+} from '../features/products/productsSlice';
 
 type ProductDataProp = {
   itemInfo: ProductDataForCart;
@@ -13,62 +16,62 @@ type ProductDataProp = {
 
 const ProductCard = ({ itemInfo }: ProductDataProp) => {
   const {
-    id,
+    _id,
     title,
     image,
     category,
     price,
     rating: { rate, count },
-    qty,
+    quantity,
   } = itemInfo;
   const productTitle = titleShortner(title, 3);
 
   const dispatch = useAppDispatch();
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
   const cartItems = useAppSelector(state => state.cart.cartData);
-  const likedProduct = wishlistItems.some(item => item.id === id);
+  const userId = useAppSelector(state => state.profile.userData?._id) ?? '';
+  const likedProduct = wishlistItems.some(item => item._id === _id);
 
   const addToWishlistHandler = () => {
-    dispatch(AddToWishlist(itemInfo));
+    const productId = _id;
+    dispatch(addProductToWishlist({ userId, productId }));
   };
 
-  const removeFromWishlistHandler = (id: number) => {
-    dispatch(RemoveFromWishlist(id));
+  const removeFromWishlistHandler = () => {
+    const productId = _id;
+    dispatch(deleteProductFromWishlist({ userId, productId }));
   };
 
-  const removeFromCartlistHandler = (id: number) => {
-    dispatch(RemoveFromCart(id));
+  const removeFromCartlistHandler = () => {
+    const productId = _id;
+    dispatch(deleteProductFromCart({ userId, productId }));
   };
 
-  const increaseQuantity = (id: number) => {
+  const increaseQuantity = (_id: string) => {
     const updatedCartItems = cartItems.map(item => {
-      if (item.id === id) {
-        return { ...item, qty: item.qty + 1 };
+      if (item._id === _id) {
+        return { ...item, quantity: item.quantity + 1 };
       }
       return item;
     });
 
     dispatch(UpdateQuantity(updatedCartItems));
   };
-  const decreaseQuantity = (id: number) => {
+  const decreaseQuantity = (_id: string) => {
     const updatedCartItems = cartItems.map(item => {
-      if (item.id === id) {
-        return { ...item, qty: item.qty - 1 };
+      if (item._id === _id) {
+        return { ...item, quantity: item.quantity - 1 };
       }
       return item;
     });
 
     dispatch(UpdateQuantity(updatedCartItems));
   };
-
-  /*
-w-[35rem] max-sm:w-[27rem] max-[400px]:w-[19.5rem] max-[450px]:w-[24rem]
-  */
 
   return (
     <>
       <div className=" flex md:flex-row h-52 bg-slate-200 rounded-md shadow-lg md:w-[35rem]">
-        <div className="max-[380px]:basis-24 sm:basis-36 md:basis-44 shrink-0 relative">
+        <div className="max-[380px]:basis-24 max-[640px]:basis-36 sm:basis-36 md:basis-44 shrink-0 relative">
           <img src={image} alt={title} className="h-full w-full" />
           <span className="absolute top-0 m-2 bg-gray-500 text-xs text-white font-semibold rounded p-1 shadow-xl opacity-80 cursor-pointer">
             {rate.toFixed(1)}
@@ -79,7 +82,7 @@ w-[35rem] max-sm:w-[27rem] max-[400px]:w-[19.5rem] max-[450px]:w-[24rem]
             <>
               <span
                 className="flex items-center justify-center absolute top-2 right-2 bg-slate-400 opacity-80 h-6 w-6 rounded-full cursor-pointer"
-                onClick={() => removeFromWishlistHandler(id)}
+                onClick={() => removeFromWishlistHandler()}
               >
                 <i className="bi bi-heart-fill text-base text-red-500"></i>
               </span>
@@ -100,7 +103,7 @@ w-[35rem] max-sm:w-[27rem] max-[400px]:w-[19.5rem] max-[450px]:w-[24rem]
         </div>
         <div className=" w-full p-2 md:p-4 flex flex-col">
           <div className="flex-grow p-1 flex flex-col gap-y-2">
-            <h1 className="font-body font-semibold text-lg">{productTitle}</h1>
+            <h1 className="font-body font-semibold text-base">{productTitle}</h1>
             <div className="flex items-center gap-y-2">
               <span className="text-xs text-gray-400">{count} ratings</span>
             </div>
@@ -113,22 +116,19 @@ w-[35rem] max-sm:w-[27rem] max-[400px]:w-[19.5rem] max-[450px]:w-[24rem]
                 <button
                   className="px-1 bg-slate-400 text-white rounded-full"
                   onClick={() => {
-                    //setItemCount(count => count + 1);
-                    increaseQuantity(id);
+                    increaseQuantity(_id);
                   }}
                 >
                   +
                 </button>
-                {qty}
+                {quantity}
                 <button
                   className="px-1 bg-slate-400 text-white rounded-full"
                   onClick={() => {
-                    if (qty < 2) {
-                      removeFromCartlistHandler(id);
-                      dispatch(RemoveFromCart(id));
+                    if (quantity < 2) {
+                      removeFromCartlistHandler();
                     } else {
-                      //setItemCount(count => count - 1);
-                      decreaseQuantity(id);
+                      decreaseQuantity(_id);
                     }
                   }}
                 >
@@ -139,8 +139,8 @@ w-[35rem] max-sm:w-[27rem] max-[400px]:w-[19.5rem] max-[450px]:w-[24rem]
           </div>
 
           <button
-            className="w-full text-gray-800 bg-orange-400 hover:bg-orange-300 p-2 rounded font-semibold shadow-lg text-sm"
-            onClick={() => removeFromCartlistHandler(id)}
+            className="w-full text-gray-100 bg-slate-700 hover:bg-slate-600 p-2 rounded font-semibold shadow-lg text-sm"
+            onClick={() => removeFromCartlistHandler()}
           >
             Remove From Cart
           </button>

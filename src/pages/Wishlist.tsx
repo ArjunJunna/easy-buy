@@ -20,14 +20,14 @@ const Wishlist = () => {
       <div className=" min-h-screen flex flex-wrap gap-6 p-8 justify-center relative">
         {wishlistData.length ? (
           wishlistData.map(item => (
-            <ProductCard key={item.id} itemInfo={item} />
+            <ProductCard key={item._id} itemInfo={item} />
           ))
         ) : (
           <h1 className="font-semibold flex justify-center items-center">
-            The product you are looking for is currently unavailable...
+            Your wishlist is currently empty...
           </h1>
         )}
-        <ScrollToTop/>
+        <ScrollToTop />
       </div>
     </>
   );

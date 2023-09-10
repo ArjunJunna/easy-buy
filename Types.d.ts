@@ -1,95 +1,61 @@
 export type ProductDataForCart = {
-  id: number;
-  category: string;
+  _id: string;
   title: string;
-  price: number;
   description: string;
   image: string;
+  category: string;
+  size: string[];
+  color: string[];
+  price: number;
+  inStock: boolean;
   rating: {
     rate: number;
     count: number;
+    _id: string;
   };
+  discount: number;
+  recommended: boolean;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
   qty: number;
+  quantity: number;
 };
-
 export type ProductData = {
-  id: number;
-  category: string;
+  _id: string;
   title: string;
-  price: number;
   description: string;
   image: string;
-  rating: { rate: number; count: number };
+  category: string;
+  size: string[];
+  color: string[];
+  price: number;
+  inStock: boolean;
+  rating: {
+    rate: number;
+    count: number;
+    _id: string;
+  };
+  discount: number;
+  recommended: boolean;
+  createdAt: string;
+  updatedAt: string;
+  quantity: number;
+  __v: number;
 };
 
 export type UserData = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  maidenName: string;
-  age: number;
-  gender: string;
-  email: string;
-  phone: string;
+  _id: string;
   username: string;
-  password: string;
-  birthDate: string;
-  image: string;
-  bloodGroup: string;
-  height: number;
-  weight: number;
-  eyeColor: string;
-  hair: {
-    color: string;
-    type: string;
-  };
-  domain: string;
-  ip: string;
-  address: {
-    address: string;
-    city: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-    postalCode: string;
-    state: string;
-  };
-  macAddress: string;
-  university: string;
-  bank: {
-    cardExpire: string;
-    cardNumber: string;
-    cardType: string;
-    currency: string;
-    iban: string;
-  };
-  company: {
-    address: {
-      address: string;
-      city: string;
-      coordinates: {
-        lat: number;
-        lng: number;
-      };
-      postalCode: string;
-      state: string;
-    };
-    department: string;
-    name: string;
-    title: string;
-  };
-  ein: string;
-  ssn: string;
-  userAgent: string;
+  email: string;
 };
 
 export type Category =
   | 'Show All Products'
-  | 'electronics'
-  | 'jewelery'
-  | `men's clothing`
-  | `women's clothing`;
+  | 'Electronics'
+  | 'Jewelery'
+  | `Men's Clothing`
+  | `Women's Clothing`;
 
 export type SortPriceType = 'LOW_TO_HIGH' | 'HIGH_TO_LOW' | '';
 
@@ -104,6 +70,81 @@ export type Login = {
 export type SetLogin = React.Dispatch<React.SetStateAction<Login>>;
 
 export type LoginHandlerArg = {
-  login: Login;
-  setLogin: SetLogin;
+  username:string,
+  password:string,
+};
+
+export type Signup = {
+  input: {
+    username: string;
+    email: string;
+    password: string;
+    confirmPwd: string;
+  };
+  error: string;
+  pwdMatch: boolean;
+};
+
+export type SetSignup = React.Dispatch<React.SetStateAction<Signup>>;
+
+export type SignupHandlerArg = {
+  username: string;
+  email:string;
+  password: string;
+};
+
+export type AddToCartType = {
+  userId: string;
+  productId: string;
+  quantity: number;
+};
+
+export type RemoveFromCartType = {
+  userId: string;
+  productId: string;
+};
+
+export type WishlistArgType = {
+  userId: string;
+  productId: string;
+};
+
+export type OrderData = {
+  amount: number;
+  amount_due: number;
+  amount_paid: number;
+  attempts: number;
+  created_at: number;
+  currency: string;
+  entity: string;
+  id: string;
+  notes: never[];
+  offer_id: null;
+  receipt: null;
+  status: string;
+};
+
+export type UserAddressResponseData = {
+  _id: string;
+  userId: string;
+  name: string;
+  street: string;
+  city: string;
+  zipcode: number;
+  state: string;
+  country: string;
+  phoneNumber: number;
+  __v: number;
+};
+
+export type UserAddressRequestData = {
+  _id?:string,
+  userId: string;
+  name: string;
+  street: string;
+  city: string;
+  zipcode: number;
+  state: string;
+  country: string;
+  phoneNumber: number;
 };

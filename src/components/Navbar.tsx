@@ -1,6 +1,8 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { SearchProduct } from '../features/products/productsSlice';
+import DiscountInfo from './DiscountInfo';
+import { useLocation } from 'react-router-dom';
 
 type ActiveLinkProp = {
   isActive: boolean;
@@ -12,6 +14,7 @@ const Navbar = () => {
   const cartItems = useAppSelector(state => state.cart.cartData);
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
   const searchValue = useAppSelector(state => state.products.searchValue);
+  const { pathname } = useLocation();
   const activeStyle = ({ isActive }: ActiveLinkProp) => {
     return isActive
       ? 'font-body font-semibold text-sm text-orange-500 hover:text-orange-200'
@@ -19,11 +22,16 @@ const Navbar = () => {
   };
   return (
     <>
-      <header className="flex flex-wrap items-center py-2 px-12 max-[420px]:px-6 sticky top-0 z-10 bg-slate-50">
-        <Link to="/" className="flex-1">
-          <span className="basis-12 font-logo text-2xl">Easy Buy</span>
+      {pathname === '/home' || pathname === '/' ? <DiscountInfo /> : null}
+      <header className="flex flex-wrap items-center py-1 px-12 max-[420px]:px-6 sticky top-0 z-10 bg-white">
+        <Link to="/home" className="flex-1">
+          <img
+            src="/assets/Easy-Buy-Logo.png"
+            alt="Easy-Buy-Logo"
+            className="h-10 max-sm:h-5 max-sm:w-16 max-[460px]:hidden"
+          />
         </Link>
-        <ul className="flex justify-between order-last flex-[100%] items-center md:order-none md:flex-auto max-md:mt-1">
+        <ul className="flex justify-around order-last flex-[100%] items-center md:order-none md:flex-auto max-md:mt-1">
           <li>
             <NavLink to="/home" className={activeStyle} title="Home">
               Home
@@ -45,15 +53,6 @@ const Navbar = () => {
                 </span>
               </>
             ) : null}
-          </li>
-          <li>
-            <NavLink
-              to="/newlaunches"
-              className={activeStyle}
-              title="New Launches"
-            >
-              New Launches
-            </NavLink>
           </li>
         </ul>
         <span className="flex-1 flex justify-end ">
@@ -107,6 +106,8 @@ const Navbar = () => {
           </button>
         </span>
       </header>
+
+      {pathname !== '/home' && pathname !== '/' ? <DiscountInfo /> : null}
     </>
   );
 };

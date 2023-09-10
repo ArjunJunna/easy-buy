@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks';
 import {
   fetchSingleProduct,
-  AddToWishlist,
 } from '../features/products/productsSlice';
-import { AddToCart } from '../features/cartlist/cartSlice';
 import { useAppSelector } from '../hooks';
-import { RemoveFromWishlist } from '../features/products/productsSlice';
+import { addProductToCart } from '../features/cartlist/cartSlice';
+import { addProductToWishlist,deleteProductFromWishlist } from '../features/products/productsSlice';
 
 type ProductCardProps = {
   itemInfo: ProductData;
@@ -16,42 +15,45 @@ type ProductCardProps = {
 
 const ProductCard = ({ itemInfo }: ProductCardProps) => {
   const {
-    id,
+    _id,
     title,
     image,
     category,
     price,
     rating: { rate },
   } = itemInfo;
-  const qty = 1;
-  const productDetails = { ...itemInfo, qty };
   const dispatch = useAppDispatch();
   const productTitle = titleShortner(title, 5);
   const navigate = useNavigate();
 
   const cartItems = useAppSelector(state => state.cart.cartData);
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
+  const userId = useAppSelector(state => state.profile.userData?._id) ?? '';
 
   const clickHandler = () => {
-    dispatch(AddToCart(productDetails));
+    const productId=_id;
+    const quantity=1;
+    dispatch(addProductToCart({ userId, productId, quantity }));
   };
 
   const goToCartHandler = () => {
-    navigate(`/products/${id}`);
-    dispatch(fetchSingleProduct(id));
+    navigate(`/products/${_id}`);
+    dispatch(fetchSingleProduct(_id));
   };
 
   const addToWishlistHandler = () => {
-    dispatch(AddToWishlist(itemInfo));
+    const productId = _id;
+    dispatch(addProductToWishlist({userId,productId}))
   };
 
-  const removeFromWishlistHandler = (id: number) => {
-    dispatch(RemoveFromWishlist(id));
+  const removeFromWishlistHandler = () => {
+    const productId = _id;
+    dispatch(deleteProductFromWishlist({ userId, productId }));
   };
 
-  const value = cartItems.some((item: ProductData) => item.id === id);
+  const value = cartItems.some((item: ProductData) => item._id === _id);
   const likedProduct = wishlistItems.some(
-    (item: ProductData) => item.id === id
+    (item: ProductData) => item._id === _id
   );
 
   return (
@@ -84,7 +86,9 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           <>
             <span
               className="flex items-center justify-center absolute top-2 right-2 bg-gray-300 opacity-80 h-6 w-6 rounded-full cursor-pointer"
-              onClick={() => removeFromWishlistHandler(id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFromWishlistHandler()}}
             >
               <i className="bi bi-heart-fill text-base text-red-500"></i>
             </span>
@@ -93,7 +97,9 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           <>
             <span
               className="flex items-center justify-center absolute top-2 right-2 bg-gray-300 opacity-80 h-6 w-6 rounded-full cursor-pointer"
-              onClick={() => addToWishlistHandler()}
+              onClick={(e) => {
+                e.stopPropagation();
+                addToWishlistHandler()}}
             >
               <i className="bi bi-heart-fill  text-white text-base hover:text-red-500"></i>
             </span>
@@ -113,7 +119,10 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           <>
             <button
               className="text-gray-800 absolute bottom-2 right-2 bg-neutral-200 font-body font-semibold text-base rounded px-2 hover:bg-slate-600 hover:text-white"
-              onClick={() => clickHandler()}
+              onClick={(e) => {
+                e.stopPropagation();  
+                clickHandler()
+              }}
             >
               Add to Cart <i className="bi bi-cart"></i>
             </button>

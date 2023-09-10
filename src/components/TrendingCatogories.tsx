@@ -41,6 +41,7 @@ const TrendingCatogories = () => {
             src={category.imageSrc}
             alt={category.alt}
             className="h-full w-full rounded-2xl"
+            loading="lazy"
           />
           <span className="absolute text-blue-100 font-body font-semibold">
             {category.name}

@@ -11,7 +11,7 @@ const store = configureStore({
     filters: filterReducer,
     cart: cartReducer,
     auth: authReducer,
-    profile:profileReducer
+    profile: profileReducer,
   },
 });
 

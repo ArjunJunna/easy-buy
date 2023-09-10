@@ -1,145 +1,87 @@
-import { createSlice, createAsyncThunk} from '@reduxjs/toolkit';
-import { fetchUserDetails } from '../../services/userService';
-import {UserData} from '../../../Types'
-/*
-type UserData = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  maidenName: string;
-  age: number;
-  gender: string;
-  email: string;
-  phone: string;
-  username: string;
-  password: string;
-  birthDate: string;
-  image: string;
-  bloodGroup: string;
-  height: number;
-  weight: number;
-  eyeColor: string;
-  hair: {
-    color: string;
-    type: string;
-  };
-  domain: string;
-  ip: string;
-  address: {
-    address: string;
-    city: string;
-    coordinates: {
-      lat: number;
-      lng: number;
-    };
-    postalCode: string;
-    state: string;
-  };
-  macAddress: string;
-  university: string;
-  bank: {
-    cardExpire: string;
-    cardNumber: string;
-    cardType: string;
-    currency: string;
-    iban: string;
-  };
-  company: {
-    address: {
-      address: string;
-      city: string;
-      coordinates: {
-        lat: number;
-        lng: number;
-      };
-      postalCode: string;
-      state: string;
-    };
-    department: string;
-    name: string;
-    title: string;
-  };
-  ein: string;
-  ssn: string;
-  userAgent: string;
-};
-*/
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { fetchUserDetails, addNewAddress,getAllUserAddresses,deleteUserAddress, editUserAddress } from '../../services/userService';
+import { UserData, UserAddressRequestData, UserAddressResponseData } from '../../../Types';
+import toast from 'react-hot-toast';
+
 type InitialState = {
   userData: UserData | null;
   isLoading: boolean;
+  userAddress: UserAddressResponseData[];
+  selectedAddress: UserAddressResponseData | null;
 };
 
 const initialState: InitialState = {
   userData: {
-    id: 1,
-    firstName: '',
-    lastName: '',
-    maidenName: '',
-    age: 0,
-    gender: '',
-    email: '',
-    phone: '',
+    _id: '',
     username: '',
-    password: '',
-    birthDate: '',
-    image: '',
-    bloodGroup: '',
-    height: 0,
-    weight: 0,
-    eyeColor: '',
-    hair: {
-      color: '',
-      type: '',
-    },
-    domain: '',
-    ip: '',
-    address: {
-      address: '',
-      city: '',
-      coordinates: {
-        lat: 0,
-        lng: 0,
-      },
-      postalCode: '',
-      state: '',
-    },
-    macAddress: '',
-    university: '',
-    bank: {
-      cardExpire: '',
-      cardNumber: '',
-      cardType: '',
-      currency: '',
-      iban: '',
-    },
-    company: {
-      address: {
-        address: '',
-        city: '',
-        coordinates: {
-          lat: 0,
-          lng: 0,
-        },
-        postalCode: '',
-        state: '',
-      },
-      department: '',
-      name: '',
-      title: '',
-    },
-    ein: '',
-    ssn: '',
-    userAgent: '',
+    email: '',
   },
   isLoading: false,
+  userAddress: [],
+  selectedAddress: null,
 };
 
 export const fetchUser = createAsyncThunk(
   'profile/fetchUser',
-  async (id: number, { rejectWithValue }) => {
+  async (name: string, { rejectWithValue }) => {
     try {
-      const response = await fetchUserDetails(id);
-      const data:UserData = response?.data;
+      const response = await fetchUserDetails(name);
+      const data: UserData = response?.data;
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const getUserAddresses = createAsyncThunk(
+  'profile/getAllUserAddresses',
+  async (userId: string, { rejectWithValue }) => {
+    try {
+      const response = await getAllUserAddresses(userId);
+
+      const data: UserAddressResponseData[] = response?.data;
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addUserAddress = createAsyncThunk(
+  'profile/addAddress',
+  async (arg: UserAddressRequestData, { rejectWithValue }) => {
+    try {
+      const response = await addNewAddress(arg);
+      const data=response?.data;
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
+
+export const deleteUserAddressById = createAsyncThunk(
+  'profile/deleteAddress',
+  async (arg: string, { rejectWithValue }) => {
+    try {
+      const response = await deleteUserAddress(arg);
+      const data: UserAddressResponseData = response?.data;
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const editUserAddressById = createAsyncThunk(
+  'profile/editAddress',
+  async (arg: any, { rejectWithValue }) => {
+    try {
+      const response = await editUserAddress(arg);
+      const data: UserAddressResponseData = response?.data;
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -150,18 +92,81 @@ export const fetchUser = createAsyncThunk(
 const profileSlice = createSlice({
   name: 'profileUser',
   initialState,
-  reducers: {},
+  reducers: {
+    ClearProfileData: state => {
+      return {
+        ...state,
+        userData: {
+          _id: '',
+          username: '',
+          email: '',
+        },
+        userAddress: [],
+        selectedAddress: null,
+      };
+    },
+    AddSelectedAddress:(state,action)=>{
+      state.selectedAddress=action.payload;
+    }
+  },
   extraReducers: builder => {
     builder.addCase(fetchUser.pending, state => {
       state.isLoading = true;
     });
     builder.addCase(fetchUser.fulfilled, (state, action) => {
       state.isLoading = false;
-     state.userData=action.payload;
+      const { _id, username, email } = action.payload;
+      if (state.userData) {
+        state.userData._id = _id;
+        state.userData.username = username;
+        state.userData.email = email;
+      }
+    });
+    builder.addCase(addUserAddress.fulfilled, (state, action) => {
+    
+      if (action.payload ) {
+        const newAddress: UserAddressResponseData = action.payload;
+        state.userAddress = [...state.userAddress, newAddress];
+        toast.success('New Address added.', {
+          style: { background: '#22c55e', color: '#FFFFFF' },
+        });
+      }
+    });
+    builder.addCase(getUserAddresses.fulfilled, (state, action) => {
+ 
+      state.userAddress = action.payload;
+    });
+    builder.addCase(deleteUserAddressById.fulfilled, (state, action) => {
+    
+          if (action.payload) {
+            toast.success('Address was deleted.', {
+              style: { background: '#c57622', color: '#FFFFFF' },
+            });
+          }
+      
+      const userAddressData=state.userAddress.filter((address)=>address._id!==action.payload._id)
+      state.userAddress=userAddressData;
+      
+    });
+    builder.addCase(editUserAddressById.fulfilled, (state, action) => {
+      const editedAddress: UserAddressResponseData = action.payload;
+      const editedAddressIndex = state.userAddress.findIndex(
+        address => address._id === editedAddress._id
+      );
+
+      if (editedAddressIndex !== -1) {
+        toast.success('Address was edited.', {
+          style: { background: '#5863e0', color: '#FFFFFF' },
+        });
+        state.userAddress[editedAddressIndex] = editedAddress;
+        if (state.selectedAddress?._id === editedAddress._id) {
+          state.selectedAddress = editedAddress;
+        }
+      }
     });
   },
 });
 
 export const profileReducer = profileSlice.reducer;
 
-
+export const { ClearProfileData,AddSelectedAddress } = profileSlice.actions;
