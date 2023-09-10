@@ -2,15 +2,17 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import {
   getAllProducts,
   getSingleProduct,
+  addToWishlist,
+  removeProductFromWishlist,
 } from '../../services/productService';
 import toast from 'react-hot-toast';
-import { ProductData } from '../../../Types';
+import { ProductData, WishlistArgType } from '../../../Types';
 
 export const fetchSingleProduct = createAsyncThunk(
   'products/fetchSingleProduct',
-  async (id: number, { rejectWithValue }) => {
+  async (_id: string, { rejectWithValue }) => {
     try {
-      const response = await getSingleProduct(id);
+      const response = await getSingleProduct(_id);
       const data: ProductData = response?.data;
 
       return data;
@@ -26,6 +28,33 @@ export const fetchAllProducts = createAsyncThunk(
     try {
       const response = await getAllProducts();
       const data: ProductData[] = response?.data;
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addProductToWishlist = createAsyncThunk(
+  'cart/addProductToWishlist',
+  async (arg: WishlistArgType, { rejectWithValue }) => {
+    try {
+      const response = await addToWishlist(arg);
+      const data = response?.data;
+
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteProductFromWishlist = createAsyncThunk(
+  'cart/removeProductFromWishlist',
+  async (arg: WishlistArgType, { rejectWithValue }) => {
+    try {
+      const response = await removeProductFromWishlist(arg);
+      const data = response?.data;
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -55,24 +84,6 @@ const productSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    AddToWishlist: (state, action: PayloadAction<ProductData>) => {
-      if (action.payload) {
-        toast.success('Your product has been added to wishlist.', {
-          style: { background: '#22c55e', color: '#FFFFFF' },
-        });
-      }
-      state.wishlistData = [...state.wishlistData, action.payload];
-    },
-    RemoveFromWishlist: (state, action: PayloadAction<number>) => {
-      if (action.payload) {
-        toast.success('Your product is removed from cartlist.', {
-          style: { background: '#c57622', color: '#FFFFFF' },
-        });
-      }
-      state.wishlistData = state.wishlistData.filter(
-        item => item.id !== action.payload
-      );
-    },
     ClearWishlist: state => {
       state.wishlistData = [];
     },
@@ -108,14 +119,23 @@ const productSlice = createSlice({
     builder.addCase(fetchSingleProduct.rejected, (state, action) => {
       state.error = action.payload as string;
     });
+    builder.addCase(addProductToWishlist.fulfilled, (state, action) => {
+      state.wishlistData = action.payload;
+      toast.success('Product added to Wishlist', {
+        style: { background: '#22c55e', color: '#FFFFFF' },
+      });
+    });
+    builder.addCase(deleteProductFromWishlist.fulfilled, (state, action) => {
+      if (action.payload) {
+        toast.success('Product removed from wishlist.', {
+          style: { background: '#c57622', color: '#FFFFFF' },
+        });
+      }
+      state.wishlistData = action.payload;
+    });
   },
 });
 
 export const productReducer = productSlice.reducer;
 
-export const {
-  AddToWishlist,
-  RemoveFromWishlist,
-  ClearWishlist,
-  SearchProduct,
-} = productSlice.actions;
+export const { ClearWishlist, SearchProduct } = productSlice.actions;

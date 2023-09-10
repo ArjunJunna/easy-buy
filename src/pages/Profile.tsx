@@ -2,7 +2,7 @@ import ProfileSection from '../components/ProfileSection';
 
 const Profile = () => {
   return (
-    <div className="flex justify-center h-full">
+    <div className="flex items-start justify-center min-h-screen p-4">
       <ProfileSection />
     </div>
   );

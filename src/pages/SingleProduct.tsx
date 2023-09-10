@@ -1,11 +1,9 @@
 import { useAppSelector, useAppDispatch } from '../hooks';
-import {
-  AddToWishlist,
-  RemoveFromWishlist,
-} from '../features/products/productsSlice';
 import { ProductData } from '../../Types';
-import { AddToCart } from '../features/cartlist/cartSlice';
+import { addProductToCart } from '../features/cartlist/cartSlice';
+import { addProductToWishlist,deleteProductFromWishlist } from '../features/products/productsSlice';
 import { useNavigate } from 'react-router-dom';
+import Loader from '../components/Loader';
 
 const SingleProduct = () => {
   const navigate = useNavigate();
@@ -13,13 +11,14 @@ const SingleProduct = () => {
   const singleProductData = useAppSelector(
     state => state?.products?.singleProductData
   );
+  const userId = useAppSelector(state => state.profile.userData?._id)??'';
   const cartItems = useAppSelector(state => state.cart.cartData);
   const wishlistItems = useAppSelector(state => state.products.wishlistData);
   if (!singleProductData) {
-    return <h1>Loading...</h1>;
+    return <Loader/>;
   }
   const {
-    id,
+    _id,
     category,
     title,
     price,
@@ -27,25 +26,28 @@ const SingleProduct = () => {
     image,
     rating: { rate, count },
   } = singleProductData;
-  const qty = 1;
-  const itemDetails = { ...singleProductData, qty };
 
-  const isInCartlist = cartItems.some((item: ProductData) => item.id === id);
+  const isInCartlist = cartItems.some((item: ProductData) => item._id === _id);
 
   const clickHandler = () => {
-    dispatch(AddToCart(itemDetails));
+      const productId = _id;
+      const quantity = 1;
+      dispatch(addProductToCart({ userId, productId, quantity }));
   };
 
   const likedProduct = wishlistItems.some(
-    (item: ProductData) => item.id === id
+    (item: ProductData) => item._id === _id
   );
 
+
   const addToWishlistHandler = () => {
-    dispatch(AddToWishlist(singleProductData));
+    const productId=_id;
+    dispatch(addProductToWishlist({ userId, productId }));
   };
 
-  const removeFromWishlistHandler = (id: number) => {
-    dispatch(RemoveFromWishlist(id));
+  const removeFromWishlistHandler = () => {
+     const productId = _id;
+    dispatch(deleteProductFromWishlist({ userId, productId }));
   };
 
   return (
@@ -87,7 +89,7 @@ const SingleProduct = () => {
               <>
                 <span
                   className="flex items-center justify-center absolute top-10 right-10 bg-slate-200 opacity-80 h-6 w-6 rounded-full cursor-pointer"
-                  onClick={() => removeFromWishlistHandler(id)}
+                  onClick={() => removeFromWishlistHandler()}
                 >
                   <i className="bi bi-heart-fill text-base text-red-500"></i>
                 </span>
@@ -127,26 +129,6 @@ const SingleProduct = () => {
               <span className="text-sm text-gray-400">Description</span>
               <h1 className="font-normal">{description}</h1>
             </div>
-            {/* 
-            <div className="flex gap-x-4">
-              <input
-                type="number"
-                className="bg-slate-300 text-center w-16 p-1 border-gray-800 rounded"
-                min={1}
-                value={itemCount}
-                onChange={e => setItemCount(Number(e.target.value))}
-              />
-              <button
-                className="w-full h-full text-gray-800 bg-orange-400 hover:bg-orange-300 p-2 rounded font-semibold shadow-lg text-sm"
-                onClick={() => dispatch(AddToCart(singleProductData))}
-              >
-                <i className="bi bi-cart-fill mr-2"></i>
-                {itemCount === 1
-                  ? `ADD TO CART`
-                  : `ADD ${itemCount} ITEMS TO CART`}
-              </button>
-            </div>
-            */}
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { Category } from '../../Types';
+import useOnClickOutside from '../utils/useOnClickOutside';
 import {
   SetCategory,
   SortPrice,
@@ -9,13 +10,12 @@ import {
   ClearFilters,
 } from '../features/filters/filterSlice';
 
-
 const Filters = () => {
-
   const [category, showCategory] = useState(false);
   const [categoryValue, setCategoryValue] = useState<
     Category | 'Show All Products'
   >('Show All Products');
+  const categoryRef = useRef<HTMLDivElement>(null);
   const ratingValue = useAppSelector(state => state.filters.rating);
   const sortPriceValue = useAppSelector(state => state.filters.sortPrice);
   const sortPricingRange = useAppSelector(state => state.filters.pricing);
@@ -23,7 +23,7 @@ const Filters = () => {
   useEffect(() => {
     dispatch(SetCategory(categoryValue));
   }, [categoryValue]);
- 
+
   const clearFilters = () => {
     dispatch(ClearFilters());
     setCategoryValue('Show All Products');
@@ -33,8 +33,13 @@ const Filters = () => {
     showCategory(prev => !prev);
   };
 
+  const handlerRef = () => {
+    showCategory(false);
+  };
+  useOnClickOutside(categoryRef, handlerRef);
+
   return (
-    <div className="w-full flex flex-col gap-y-2 sticky top-20 pl-4 ">
+    <div className="w-full flex flex-col gap-y-2 sticky top-20 pl-2">
       <div className="flex justify-between items-center font-medium text-sm w-full">
         <span>Filters</span>
         <button
@@ -44,59 +49,61 @@ const Filters = () => {
           Clear
         </button>
       </div>
-      <div className="w-[80%] cursor-pointer border-gray-300 rounded-md border-2 p-2 flex items-center">
-        <span
-          className="relative font-medium text-sm w-full"
-          onClick={() => showCategory(prev => !prev)}
-        >
-          {categoryValue}
-          {category ? (
-            <>
-              <i className="bi bi-caret-up absolute right-1 -top-0.5 text-xl"></i>
-            </>
-          ) : (
-            <>
-              <i className="bi bi-caret-down absolute right-1 -top-0.5 text-xl"></i>
-            </>
-          )}
-        </span>
+      <div className="flex flex-col gap-y-1" ref={categoryRef}>
+        <div className="w-full cursor-pointer border-gray-300 rounded-md border-2 p-2 flex items-center">
+          <span
+            className="relative font-medium text-sm w-full"
+            onClick={() => showCategory(prev => !prev)}
+          >
+            {categoryValue}
+            {category ? (
+              <>
+                <i className="bi bi-caret-up absolute right-1 -top-0.5 text-xl"></i>
+              </>
+            ) : (
+              <>
+                <i className="bi bi-caret-down absolute right-1 -top-0.5 text-xl"></i>
+              </>
+            )}
+          </span>
+        </div>
+        {category && (
+          <>
+            <div className="flex flex-col items-center w-full cursor-pointer border-gray-300 rounded-md border-2 py-1 font-medium text-sm">
+              <span
+                className="hover:bg-slate-200 w-full text-center py-1"
+                onClick={() => setCategory('Show All Products')}
+              >
+                Show All products
+              </span>
+              <span
+                className="hover:bg-slate-200 w-full text-center py-1"
+                onClick={() => setCategory('Electronics')}
+              >
+                Electronics
+              </span>
+              <span
+                className="hover:bg-slate-200 w-full text-center py-1"
+                onClick={() => setCategory('Jewelery')}
+              >
+                Jewellery
+              </span>
+              <span
+                className="hover:bg-slate-200 w-full text-center py-1"
+                onClick={() => setCategory(`Men's Clothing`)}
+              >
+                Men's clothing
+              </span>
+              <span
+                className="hover:bg-slate-200 w-full text-center py-1"
+                onClick={() => setCategory(`Women's Clothing`)}
+              >
+                Women's Clothing
+              </span>
+            </div>
+          </>
+        )}
       </div>
-      {category && (
-        <>
-          <div className="flex flex-col w-[80%] cursor-pointer border-gray-300 rounded-md border-2 py-1 items-start font-medium text-sm">
-            <span
-              className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategory('Show All Products')}
-            >
-              Show All products
-            </span>
-            <span
-              className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategory('electronics')}
-            >
-              electronics
-            </span>
-            <span
-              className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategory('jewelery')}
-            >
-              jewellery
-            </span>
-            <span
-              className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategory(`men's clothing`)}
-            >
-              men's clothing
-            </span>
-            <span
-              className="hover:bg-slate-200 w-full text-center py-1"
-              onClick={() => setCategory(`women's clothing`)}
-            >
-              women's clothing
-            </span>
-          </div>
-        </>
-      )}
       <div className="flex flex-col items-start justify-start w-[80%]">
         <label className="font-semibold text-sm">Price</label>
         <div>

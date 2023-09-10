@@ -13,8 +13,8 @@ const TrendingCard = ({ itemInfo }: TrendingCardProp) => {
   const dispatch = useAppDispatch();
   const productTitle = titleShortner(itemInfo.title, 3);
   const goToCartHandler = () => {
-    navigate(`/products/${itemInfo.id}`);
-    dispatch(fetchSingleProduct(itemInfo.id));
+    navigate(`/products/${itemInfo._id}`);
+    dispatch(fetchSingleProduct(itemInfo._id));
   };
   return (
     <div
