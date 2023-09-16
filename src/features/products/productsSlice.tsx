@@ -4,6 +4,7 @@ import {
   getSingleProduct,
   addToWishlist,
   removeProductFromWishlist,
+  getWishlist,
 } from '../../services/productService';
 import toast from 'react-hot-toast';
 import { ProductData, WishlistArgType } from '../../../Types';
@@ -62,6 +63,20 @@ export const deleteProductFromWishlist = createAsyncThunk(
   }
 );
 
+export const fetchWishlist = createAsyncThunk(
+  'cart/getUserWishlist',
+  async (arg: string, { rejectWithValue }) => {
+    try {
+    
+      const response = await getWishlist(arg);
+      const data = response?.data;
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 type InitialState = {
   loading: boolean;
   error: string;
@@ -106,6 +121,11 @@ const productSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     });
+    
+     builder.addCase(fetchWishlist.fulfilled, (state, action) => {
+     
+       state.wishlistData = action.payload;
+     });
     builder.addCase(fetchSingleProduct.pending, state => {
       state.loading = true;
     });

@@ -2,12 +2,13 @@ import { ProductData } from '../../Types';
 import { titleShortner } from '../utils/utilities';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../hooks';
-import {
-  fetchSingleProduct,
-} from '../features/products/productsSlice';
+import { fetchSingleProduct } from '../features/products/productsSlice';
 import { useAppSelector } from '../hooks';
 import { addProductToCart } from '../features/cartlist/cartSlice';
-import { addProductToWishlist,deleteProductFromWishlist } from '../features/products/productsSlice';
+import {
+  addProductToWishlist,
+  deleteProductFromWishlist,
+} from '../features/products/productsSlice';
 
 type ProductCardProps = {
   itemInfo: ProductData;
@@ -21,6 +22,7 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
     category,
     price,
     rating: { rate },
+    inStock,
   } = itemInfo;
   const dispatch = useAppDispatch();
   const productTitle = titleShortner(title, 5);
@@ -31,8 +33,8 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
   const userId = useAppSelector(state => state.profile.userData?._id) ?? '';
 
   const clickHandler = () => {
-    const productId=_id;
-    const quantity=1;
+    const productId = _id;
+    const quantity = 1;
     dispatch(addProductToCart({ userId, productId, quantity }));
   };
 
@@ -43,7 +45,7 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
 
   const addToWishlistHandler = () => {
     const productId = _id;
-    dispatch(addProductToWishlist({userId,productId}))
+    dispatch(addProductToWishlist({ userId, productId }));
   };
 
   const removeFromWishlistHandler = () => {
@@ -86,9 +88,10 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           <>
             <span
               className="flex items-center justify-center absolute top-2 right-2 bg-gray-300 opacity-80 h-6 w-6 rounded-full cursor-pointer"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
-                removeFromWishlistHandler()}}
+                removeFromWishlistHandler();
+              }}
             >
               <i className="bi bi-heart-fill text-base text-red-500"></i>
             </span>
@@ -97,34 +100,44 @@ const ProductCard = ({ itemInfo }: ProductCardProps) => {
           <>
             <span
               className="flex items-center justify-center absolute top-2 right-2 bg-gray-300 opacity-80 h-6 w-6 rounded-full cursor-pointer"
-              onClick={(e) => {
+              onClick={e => {
                 e.stopPropagation();
-                addToWishlistHandler()}}
+                addToWishlistHandler();
+              }}
             >
               <i className="bi bi-heart-fill  text-white text-base hover:text-red-500"></i>
             </span>
           </>
         )}
-
-        {value ? (
+        {inStock ? (
           <>
-            <button
-              className="text-gray-800 absolute bottom-2 right-2 bg-neutral-200 font-body font-semibold text-base rounded px-2 hover:bg-slate-600 hover:text-white"
-              onClick={() => navigate('/cartlist')}
-            >
-              Go to Cart <i className="bi bi-cart"></i>
-            </button>
+            {value ? (
+              <>
+                <button
+                  className="text-gray-800 absolute bottom-2 right-2 bg-neutral-200 font-body font-semibold text-base rounded px-2 hover:bg-slate-600 hover:text-white"
+                  onClick={() => navigate('/cartlist')}
+                >
+                  Go to Cart <i className="bi bi-cart"></i>
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  className="text-gray-800 absolute bottom-2 right-2 bg-neutral-200 font-body font-semibold text-base rounded px-2 hover:bg-slate-600 hover:text-white"
+                  onClick={e => {
+                    e.stopPropagation();
+                    clickHandler();
+                  }}
+                >
+                  Add to Cart <i className="bi bi-cart"></i>
+                </button>
+              </>
+            )}
           </>
         ) : (
           <>
-            <button
-              className="text-gray-800 absolute bottom-2 right-2 bg-neutral-200 font-body font-semibold text-base rounded px-2 hover:bg-slate-600 hover:text-white"
-              onClick={(e) => {
-                e.stopPropagation();  
-                clickHandler()
-              }}
-            >
-              Add to Cart <i className="bi bi-cart"></i>
+            <button className="text-gray-100 absolute bottom-2 right-2 bg-black font-body font-semibold text-base rounded px-2 cursor-default">
+              Out of Stock
             </button>
           </>
         )}

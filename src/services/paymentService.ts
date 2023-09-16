@@ -2,7 +2,11 @@ import { userRequest } from '../requestMethods';
 
 const createOrder = async (amount: number) => {
   try {
-    const response = await userRequest.post(`/payment/checkout`, { amount });
+   
+    const amountAsInteger = parseInt(amount.toString(), 10); 
+    const response = await userRequest.post(`/payment/checkout`, {
+      amount: amountAsInteger,
+    });
     return response;
   } catch (error: any) {
     console.log(error.message);

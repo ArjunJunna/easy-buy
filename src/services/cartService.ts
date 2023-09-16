@@ -1,6 +1,7 @@
 import { userRequest } from "../requestMethods";
 import { AddToCartType,RemoveFromCartType } from "../../Types";
 
+
 const addToCart=async(arg:AddToCartType)=>{
     try {
         const {userId}=arg;
@@ -11,9 +12,12 @@ const addToCart=async(arg:AddToCartType)=>{
     }
 }
 
-const getUserCart=async(_id:string)=>{
+const getUserCart=async(arg:string)=>{
     try {
-        const response=await userRequest.get(`/carts/${_id}`);
+      
+     
+        const response=await userRequest.get(`/carts/${arg}`);
+       
         return response;
     } catch (error:any) {
           console.log(error.message);

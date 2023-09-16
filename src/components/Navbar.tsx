@@ -46,7 +46,7 @@ const Navbar = () => {
             <NavLink to="/wishlist" className={activeStyle} title="Wishlist">
               Wishlist
             </NavLink>
-            {wishlistItems?.length ? (
+            {wishlistItems?.length>0 ? (
               <>
                 <span className="absolute font-medium text-xs bottom-3 px-1 rounded-full bg-gray-200">
                   {wishlistItems?.length}
@@ -87,7 +87,7 @@ const Navbar = () => {
             <NavLink to="/cartlist">
               <i className="bi bi-bag hover:text-red-400" title="Cart"></i>
 
-              {cartItems?.length ? (
+              {cartItems?.length>0 ? (
                 <>
                   <span className="absolute font-medium text-xs top-2 px-1 rounded-full bg-gray-200">
                     {cartItems?.length}

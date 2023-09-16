@@ -10,8 +10,10 @@ const Cart = () => {
   return (
     <>
       <div className="text-center py-4 text-2xl">
-        <span>YOUR CART</span>
-        {cartData.length ? (
+        <span>
+          YOUR CART <i className="bi bi-cart"></i>
+        </span>
+        {cartData.length > 0 ? (
           <div className="flex justify-around py-1">
             <button
               className="border-2 border-slate-800 text-sm py-1 px-2 font-semibold hover:bg-black hover:text-white"
@@ -21,14 +23,14 @@ const Cart = () => {
             </button>
             <button
               className="border-2 border-slate-800 text-sm py-1 px-2 font-semibold bg-black text-white hover:bg-slate-50 hover:text-black"
-              onClick={() => navigate('/checkout')}
+              onClick={() => navigate('/wishlist')}
             >
-              CHECKOUT NOW
+              VIEW WISHLIST
             </button>
           </div>
         ) : null}
       </div>
-      {cartData.length ? (
+      {cartData.length > 0 ? (
         <div className="flex flex-wrap gap-4 p-4 justify-center min-h-screen relative">
           <div className=" flex flex-col gap-y-6">
             {cartData.map(item => (

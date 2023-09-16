@@ -18,7 +18,7 @@ export type ProductDataForCart = {
   createdAt: string;
   updatedAt: string;
   __v: number;
-  qty: number;
+  //qty: number;
   quantity: number;
 };
 export type ProductData = {

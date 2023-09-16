@@ -15,7 +15,7 @@ export const loginHandler = createAsyncThunk(
         if (status === 200) {
           localStorage.setItem('token', data?.accessToken);
           localStorage.setItem('username', data?.username);
-          toast.success('You are successfully logged in...', {
+          toast.success(`Welcome back, ${data?.username}`, {
             style: { background: '#22c55e', color: '#FFFFFF' },
           });
           return data;
@@ -40,7 +40,7 @@ export const signupHandler = createAsyncThunk(
         if (status === 200) {
           localStorage.setItem('token', data?.accessToken);
           localStorage.setItem('username', data?.username);
-          toast.success('You are successfully signed in...', {
+          toast.success(`Welcome to Easy Buy,${data?.username}`, {
             style: { background: '#22c55e', color: '#FFFFFF' },
           });
           return data;

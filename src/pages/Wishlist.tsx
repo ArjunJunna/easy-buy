@@ -8,7 +8,7 @@ const Wishlist = () => {
   return (
     <>
       <div>
-        {wishlistData.length ? (
+        {wishlistData.length>0 ? (
           <>
             <h2 className="text-start font-body font-semibold p-4">
               You have total {wishlistData?.length} items in wishlist...
@@ -18,7 +18,7 @@ const Wishlist = () => {
       </div>
 
       <div className=" min-h-screen flex flex-wrap gap-6 p-8 justify-center relative">
-        {wishlistData.length ? (
+        {wishlistData.length>0 ? (
           wishlistData.map(item => (
             <ProductCard key={item._id} itemInfo={item} />
           ))

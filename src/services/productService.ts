@@ -40,6 +40,17 @@ const addToWishlist = async (arg: WishlistArgType) => {
   }
 };
 
+const getWishlist = async (arg: string) => {
+  try {
+ 
+    const response = await userRequest.get(`/wishlist/${arg}`);
+
+    return response;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
 const removeProductFromWishlist = async (arg: WishlistArgType) => {
   try {
     const { userId } = arg;
@@ -52,4 +63,10 @@ const removeProductFromWishlist = async (arg: WishlistArgType) => {
   }
 };
 
-export { getAllProducts, getSingleProduct, addToWishlist ,removeProductFromWishlist};
+export {
+  getAllProducts,
+  getSingleProduct,
+  addToWishlist,
+  removeProductFromWishlist,
+  getWishlist,
+};
