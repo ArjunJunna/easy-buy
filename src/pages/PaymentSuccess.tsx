@@ -1,7 +1,18 @@
+import Loader from '../components/Loader';
 import { useAppSelector } from '../hooks';
 
 const PaymentSuccess = () => {
   const currentOrder = useAppSelector(state => state.orders.orderData);
+
+  if (
+    !currentOrder.paymentId ||
+    !currentOrder.orderId ||
+    !currentOrder.amount ||
+    !currentOrder.deliveryAddress ||
+    !currentOrder.products
+  ) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col justify-start items-center min-h-screen pt-8 gap-y-4">
